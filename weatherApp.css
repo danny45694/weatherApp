@@ -1,0 +1,8 @@
+.userPrompt {
+    background-color: violet;
+    display: flexbox;
+    flex-direction: column;
+    justify-content: center;
+    width: 100%;
+    height: 100px;
+}
