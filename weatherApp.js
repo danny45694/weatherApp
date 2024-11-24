@@ -13,9 +13,11 @@ Add event listeners
 */
 
 // Add event listeners
+const weatherForm = document.querySelector(".weatherForm");
 
-form.addEventListener("submit", async event => {
+weatherForm.addEventListener("submit", async event => {
   event.preventDefault(); //Prevent the form from refreshing the page
+  const cityInput = document.querySelector(".cityInput");
   const city = cityInput.value.trim();
   if(city){
     try {
@@ -78,9 +80,68 @@ Create a function renderWeatherPage() {
 
 */
 
-async function displayWeatherInfo(data)
+async function displayWeatherInfo(data) {
+  let weatherDiv = document.querySelector('.weather');
+    weatherDiv.innerHTML = "";
+    weatherDiv.style.display = "flex";
 
+    let days = data.daily.time.length;
 
+    for (let i = 0; i < days; i++) {
+      let date = data.daily.time[i];
+      let temp_max = data.daily.temperature_2m_max[i];
+      let temp_min = data.daily.temperature_2m_min[i];
+      let windspeed = data.daily.windspeed_10m_max[i];
+      let weathercode = data.daily.weathercode[i];
+
+      let weatherDesc = getWeatherDescription(weathercode);
+
+      let html = '<h3>' + date + '</h3>' +
+                 '<p><strong>Weather:</strong> ' + weatherDesc + '</p>' +
+                 '<p><strong>Temperature:</strong> ' + temp_min + '°C - ' + temp_max + '°C</p>' +
+                 '<p><strong>Wind Speed:</strong> ' + windspeed + ' km/h</p>';
+
+      let dayDiv = document.createElement('div');
+      dayDiv.innerHTML = html;
+      weatherDiv.appendChild(dayDiv);
+    }
+}
+
+// Function to map weather codes to descriptions
+function getWeatherDescription(code) {
+  let descriptions = {
+      0: 'Clear sky',
+      1: 'Mainly clear',
+      2: 'Partly cloudy',
+      3: 'Overcast',
+      45: 'Fog',
+      48: 'Depositing rime fog',
+      51: 'Light drizzle',
+      53: 'Moderate drizzle',
+      55: 'Dense drizzle',
+      56: 'Light freezing drizzle',
+      57: 'Dense freezing drizzle',
+      61: 'Slight rain',
+      63: 'Moderate rain',
+      65: 'Heavy rain',
+      66: 'Light freezing rain',
+      67: 'Heavy freezing rain',
+      71: 'Slight snowfall',
+      73: 'Moderate snowfall',
+      75: 'Heavy snowfall',
+      77: 'Snow grains',
+      80: 'Slight rain showers',
+      81: 'Moderate rain showers',
+      82: 'Violent rain showers',
+      85: 'Slight snow showers',
+      86: 'Heavy snow showers',
+      95: 'Thunderstorm',
+      96: 'Thunderstorm with slight hail',
+      99: 'Thunderstorm with heavy hail'
+  };
+
+  return descriptions[code] || 'Unknown weather condition';
+}
 
 
 
