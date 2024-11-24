@@ -3,47 +3,20 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>WeatherApp</title>
-    <link rel="stylesheet" type="text/css" href="weatherApp.css">
+    <title>Document</title>
+    <link rel="stylesheet" href="weatherApp.css">
 </head>
 <body>
 
-    <div class= "app">
-        <h1>Weather App</h1>
-        <form id="locationForm">
-          <input type="text" id="city" placeholder="Enter city name" required>
-          <button type="submit">Get Weather</button>
-        </form>
+    <form class="weatherForm">
+        <input type="text" class="cityInput" placeholder="Enter city">
+        <button type="submit">Get Weather</button>
+    </form>
 
-        <!-- Current Weather Section -->
-    <div id="currentWeather" class="hidden">
-        <h2 id="location"></h2>
-        <p id="temperature"></p>
-        <p id="description"></p>
-      </div>
-  
-      <!-- Today's Highlights Section -->
-      <div id="highlights" class="hidden">
-        <h2>Today's Highlights</h2>
-        <div class="highlight-item">
-
-          <h3>Wind Speed</h3>
-          <p id="windSpeed"></p>
-        </div>
-
-        <div class="highlight-item">
-          <h3>Humidity</h3>
-          <p id="humidity"></p>
-        </div>
-      </div>
-  
-      <!-- 5-Day Forecast Section -->
-      <div id="forecast" class="hidden">
-        <h2>5-Day Forecast</h2>
-        <div id="forecastContainer"></div>
-      </div>
+    <div class="card" style="display:none">
     </div>
-
-<script src="weatherApp.js"></script>
+ 
+    
 </body>
+<script src="javascript.js"></script>
 </html>
