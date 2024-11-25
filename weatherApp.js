@@ -20,11 +20,11 @@ const content = document.querySelector(".content");
 
 // Event listeners
 currentWeatherBtn.addEventListener('click', showCurrentWeather);
-//forecastBtn.addEventListener('click', showForecast);
+forecastBtn.addEventListener('click', showForecast);
 
 // Function to get coordinates based on city name
 async function getCoordinates(city) {
-    const geoCodingApi = `https://geocoding-api.open-meteo.com/v1/search?name=${encodeURIComponent(city)}&count=1&language=en&format=json`;
+    const geoCodingApi = `https://geocoding-api.open-meteo.com/v1/search?name=${city}&count=1&language=en&format=json`;
     const response = await fetch(geoCodingApi);
     if (!response.ok) {
         throw new Error("Could not fetch coordinates");
@@ -76,6 +76,15 @@ async function showForecast() {
   }
 }
 
+// Function to get forecast data
+async function getForecastData(latitude, longitude) {
+  const apiUrl = `https://api.open-meteo.com/v1/forecast?latitude=${latitude}&longitude=${longitude}&daily=temperature_2m_max,temperature_2m_min,weathercode,windspeed_10m_max&timezone=auto`;
+  const response = await fetch(apiUrl);
+  if (!response.ok) {
+      throw new Error("Failed to fetch forecast data");
+  }
+  return await response.json();
+}
 
 // Function to get current weather data
 async function getCurrentWeatherData(latitude, longitude) {
@@ -88,7 +97,7 @@ async function getCurrentWeatherData(latitude, longitude) {
 }
 
 //Function to display current weather data
-function displayCurrentWeatherInfo(data) {
+function displayCurrentWeatherInfo(city, data) {
   content.style.display = "block";
   const currentWeather = data.current_weather;
   const weatherCode = currentWeather.weathercode;
@@ -124,7 +133,7 @@ function displayCurrentWeatherInfo(data) {
 }
 
 // Function to display forecast data
-function displayForecastInfo(data) {
+function displayForecastInfo(city, data) {
   content.style.display = "block";
   const forecastContainer = document.createElement('div');
   forecastContainer.classList.add('forecast-container');
