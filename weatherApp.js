@@ -13,9 +13,58 @@ Add event listeners
 */
 
 // Add event listeners
-const weatherForm = document.querySelector(".weatherForm");
+const cityInput = document.querySelector(".cityInput");
+const currentWeatherBtn = document.getElementById("currentWeatherBtn");
+const forecastBtn = document.getElementById("forecastBtn");
+const content = document.querySelector(".content");
 
-weatherForm.addEventListener("submit", async event => {
+// Event listeners
+currentWeatherBtn.addEventListener('click', showCurrentWeather);
+//forecastBtn.addEventListener('click', showForecast);
+
+// Function to get coordinates based on city name
+async function getCoordinates(city) {
+    const geoCodingApi = `https://geocoding-api.open-meteo.com/v1/search?name=${encodeURIComponent(city)}&count=1&language=en&format=json`;
+    const response = await fetch(geoCodingApi);
+    if (!response.ok) {
+        throw new Error("Could not fetch coordinates");
+    }
+
+    const data = await response.json();
+
+    if (data.results && data.results.length > 0) {
+        const latitude = data.results[0].latitude;
+        const longitude = data.results[0].longitude;
+        return { latitude, longitude };
+    } else {
+        throw new Error("No results found for the given city");
+    }
+}
+
+// Function to show current weather
+async function showCurrentWeather() {
+    content.innerHTML = ''; // Clear previous content
+
+    const city = cityInput.value;
+    if (city) {
+        try {
+            const { latitude, longitude } = await getCoordinates(city);
+            const weatherData = await getCurrentWeatherData(latitude, longitude);
+
+            console.log(displayCurrentWeatherInfo(city, weatherData));
+        } catch (error) {
+            console.error(error);
+            displayError("Could not fetch current weather data.");
+        }
+    }
+}
+
+/*
+
+
+
+
+currentWeatherBtn.addEventListener("click", async event => {
   event.preventDefault(); //Prevent the form from refreshing the page
   const cityInput = document.querySelector(".cityInput");
   const city = cityInput.value.trim();
@@ -80,6 +129,8 @@ Create a function renderWeatherPage() {
 
 */
 
+
+
 async function displayWeatherInfo(data) {
   let weatherDiv = document.querySelector('.weather');
     weatherDiv.innerHTML = "";
@@ -97,9 +148,9 @@ async function displayWeatherInfo(data) {
       let weatherDesc = getWeatherDescription(weathercode);
 
       let html = '<h3>' + date + '</h3>' +
-                 '<p><strong>Weather:</strong> ' + weatherDesc + '</p>' +
-                 '<p><strong>Temperature:</strong> ' + temp_min + '°C - ' + temp_max + '°C</p>' +
-                 '<p><strong>Wind Speed:</strong> ' + windspeed + ' km/h</p>';
+        '<p><strong>Weather:</strong> ' + weatherDesc + '</p>' +
+        '<p><strong>Temperature:</strong> ' + temp_min + '°C - ' + temp_max + '°C</p>' +
+        '<p><strong>Wind Speed:</strong> ' + windspeed + ' km/h</p>';
 
       let dayDiv = document.createElement('div');
       dayDiv.innerHTML = html;
