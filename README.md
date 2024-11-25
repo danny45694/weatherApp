@@ -1,6 +1,6 @@
 # weatherApp
 
-Thank you for using my reviewing my weather app. 
+Thank you for reviewing my weather app. 
 
 Enter city name into input field and click on one of the 2 buttons present. 
 
